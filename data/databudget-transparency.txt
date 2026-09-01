@@ -1,0 +1,1891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Altamonte Springs Budget Impact Explorer</title>
+  <style>
+    #as-budget-impact-explorer {
+      --bg: #f5f3ed;
+      --ink: #171717;
+      --gold: #988642;
+      --gold-light: #d8c779;
+      --line: rgba(23, 23, 23, .11);
+      --white: #fff;
+      box-sizing: border-box;
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      text-rendering: optimizeLegibility;
+    }
+
+    #as-budget-impact-explorer *,
+    #as-budget-impact-explorer *::before,
+    #as-budget-impact-explorer *::after {
+      box-sizing: inherit;
+    }
+
+    #as-budget-impact-explorer button,
+    #as-budget-impact-explorer input,
+    #as-budget-impact-explorer summary,
+    #as-budget-impact-explorer a {
+      font: inherit;
+    }
+
+    #as-budget-impact-explorer button,
+    #as-budget-impact-explorer input,
+    #as-budget-impact-explorer a,
+    #as-budget-impact-explorer summary {
+      outline-color: var(--gold);
+      outline-offset: 3px;
+    }
+
+    #as-budget-impact-explorer .abi-header {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    #as-budget-impact-explorer .abi-header-inner,
+    #as-budget-impact-explorer .abi-page {
+      width: min(1380px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    #as-budget-impact-explorer .abi-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 82px;
+    }
+
+    #as-budget-impact-explorer .abi-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    #as-budget-impact-explorer .abi-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #fff;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    #as-budget-impact-explorer .abi-wordmark strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.15;
+      letter-spacing: -.01em;
+    }
+
+    #as-budget-impact-explorer .abi-wordmark span:last-child {
+      display: block;
+      margin-top: 2px;
+      color: rgba(23, 23, 23, .55);
+      font-size: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    #as-budget-impact-explorer .abi-badge {
+      display: inline-flex;
+      border: 1px solid rgba(152, 134, 66, .28);
+      border-radius: 999px;
+      background: rgba(152, 134, 66, .10);
+      padding: 5px 11px;
+      color: #66591f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer .abi-link {
+      color: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration-color: var(--gold);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+    #as-budget-impact-explorer .abi-page {
+      padding: 42px 0 64px;
+    }
+
+    #as-budget-impact-explorer .abi-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      align-items: end;
+      gap: 40px;
+    }
+
+    #as-budget-impact-explorer .abi-eyebrow {
+      margin: 0;
+      color: #746528;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer h1,
+    #as-budget-impact-explorer h2,
+    #as-budget-impact-explorer h3,
+    #as-budget-impact-explorer p {
+      margin-top: 0;
+    }
+
+    #as-budget-impact-explorer h1 {
+      max-width: 900px;
+      margin: 16px 0 0;
+      font-size: clamp(42px, 6vw, 84px);
+      font-weight: 700;
+      line-height: .96;
+      letter-spacing: -.055em;
+    }
+
+    #as-budget-impact-explorer .abi-lede {
+      max-width: 580px;
+      margin: 0 0 4px;
+      color: rgba(23, 23, 23, .66);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    #as-budget-impact-explorer .abi-main-card {
+      margin-top: 38px;
+      overflow: hidden;
+      border-radius: 32px;
+      background: #171717;
+      color: #fff;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .12);
+    }
+
+    #as-budget-impact-explorer .abi-control-chart {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(390px, .95fr);
+      gap: 40px;
+      padding: 42px;
+    }
+
+    #as-budget-impact-explorer .abi-control {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #as-budget-impact-explorer .abi-control-label-row,
+    #as-budget-impact-explorer .abi-chart-head,
+    #as-budget-impact-explorer .abi-card-head,
+    #as-budget-impact-explorer .abi-detail-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    #as-budget-impact-explorer .abi-control-label {
+      color: rgba(255, 255, 255, .56);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-step-badge {
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 999px;
+      padding: 4px 10px;
+      color: rgba(255, 255, 255, .65);
+      font-size: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-percent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      font-size: clamp(58px, 6vw, 78px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.065em;
+    }
+
+    #as-budget-impact-explorer .abi-down {
+      color: #c5ad55;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    #as-budget-impact-explorer .abi-slider-wrap {
+      margin-top: 38px;
+    }
+
+    #as-budget-impact-explorer .abi-range {
+      width: 100%;
+      height: 28px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: #c5ad55;
+    }
+
+    #as-budget-impact-explorer .abi-range-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+      color: rgba(255, 255, 255, .45);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer .abi-summaries {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    #as-budget-impact-explorer .abi-summary {
+      min-height: 118px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .06);
+      padding: 19px;
+    }
+
+    #as-budget-impact-explorer .abi-summary-label {
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, .56);
+      font-size: 14px;
+    }
+
+    #as-budget-impact-explorer .abi-summary-value {
+      margin: 0;
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: -.035em;
+    }
+
+    #as-budget-impact-explorer .abi-summary:first-child .abi-summary-value {
+      color: var(--gold-light);
+    }
+
+    #as-budget-impact-explorer .abi-summary-note {
+      margin: 7px 0 0;
+      color: rgba(255, 255, 255, .42);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    #as-budget-impact-explorer .abi-chart-side {
+      min-width: 0;
+      border-left: 1px solid rgba(255, 255, 255, .10);
+      padding-left: 40px;
+    }
+
+    #as-budget-impact-explorer .abi-chart-kicker {
+      margin: 0;
+      color: rgba(255, 255, 255, .46);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-chart-title {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, .86);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer .abi-tabs {
+      display: inline-flex;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .10);
+      padding: 4px;
+    }
+
+    #as-budget-impact-explorer .abi-tab {
+      min-height: 36px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      padding: 7px 11px;
+      color: rgba(255, 255, 255, .62);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer .abi-tab[aria-selected="true"] {
+      background: #fff;
+      color: #171717;
+    }
+
+    #as-budget-impact-explorer .abi-chart-wrap {
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 470px);
+      height: 390px;
+      margin: 2px auto 0;
+      overflow: visible;
+    }
+
+    #as-budget-impact-explorer .abi-chart {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    #as-budget-impact-explorer .abi-slice {
+      cursor: pointer;
+      transition: opacity 180ms ease, filter 180ms ease, stroke-width 180ms ease;
+      vector-effect: non-scaling-stroke;
+    }
+
+    #as-budget-impact-explorer .abi-slice.is-muted {
+      opacity: .38;
+    }
+
+    #as-budget-impact-explorer .abi-slice.is-active {
+      filter: brightness(1.12) drop-shadow(0 8px 8px rgba(0, 0, 0, .38));
+      stroke: #fff;
+      stroke-width: 4;
+    }
+
+    #as-budget-impact-explorer .abi-chart-center {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      width: 145px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    #as-budget-impact-explorer .abi-center-value {
+      display: block;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -.055em;
+    }
+
+    #as-budget-impact-explorer .abi-center-label {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, .48);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.7;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-tooltip {
+      position: absolute;
+      z-index: 90;
+      display: none;
+      min-width: 180px;
+      max-width: 240px;
+      border: 1px solid rgba(0, 0, 0, .1);
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px 12px;
+      color: #171717;
+      pointer-events: none;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .2);
+    }
+
+    #as-budget-impact-explorer .abi-tooltip.is-open {
+      display: block;
+    }
+
+    #as-budget-impact-explorer .abi-tooltip-name,
+    #as-budget-impact-explorer .abi-tooltip-value,
+    #as-budget-impact-explorer .abi-tooltip-share {
+      margin: 0;
+    }
+
+    #as-budget-impact-explorer .abi-tooltip-name {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    #as-budget-impact-explorer .abi-tooltip-value {
+      margin-top: 4px;
+      color: rgba(23, 23, 23, .75);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer .abi-tooltip-share {
+      margin-top: 4px;
+      color: rgba(23, 23, 23, .48);
+      font-size: 11px;
+    }
+
+    #as-budget-impact-explorer .abi-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid rgba(255, 255, 255, .10);
+    }
+
+    #as-budget-impact-explorer .abi-metric {
+      border-right: 1px solid rgba(255, 255, 255, .10);
+      padding: 24px 26px;
+    }
+
+    #as-budget-impact-explorer .abi-metric:last-child {
+      border-right: 0;
+    }
+
+    #as-budget-impact-explorer .abi-metric-label {
+      margin: 0;
+      color: rgba(255, 255, 255, .46);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-metric-value {
+      margin: 10px 0 0;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -.03em;
+    }
+
+    #as-budget-impact-explorer .abi-details,
+    #as-budget-impact-explorer .abi-method {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      padding: 15px 20px;
+    }
+
+    #as-budget-impact-explorer summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #as-budget-impact-explorer summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #as-budget-impact-explorer summary::after {
+      content: "›";
+      color: rgba(23, 23, 23, .38);
+      font-size: 22px;
+      transform: rotate(0);
+      transition: transform 180ms ease;
+    }
+
+    #as-budget-impact-explorer details[open] summary::after {
+      transform: rotate(90deg);
+    }
+
+    #as-budget-impact-explorer .abi-details-copy,
+    #as-budget-impact-explorer .abi-method-copy {
+      max-width: 920px;
+      margin: 14px 0 0;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      color: rgba(23, 23, 23, .66);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    #as-budget-impact-explorer .abi-details-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    #as-budget-impact-explorer .abi-impact-panel {
+      margin-top: 24px;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: #fff;
+      padding: 46px;
+    }
+
+    #as-budget-impact-explorer .abi-impact-panel h2 {
+      max-width: 900px;
+      margin: 10px 0 0;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.03;
+      letter-spacing: -.05em;
+    }
+
+    #as-budget-impact-explorer .abi-mode-note {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 24px;
+      border-radius: 17px;
+      background: #f5f3ed;
+      padding: 16px;
+      color: rgba(23, 23, 23, .64);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    #as-budget-impact-explorer .abi-mode-note p {
+      max-width: 900px;
+      margin: 0;
+    }
+
+    #as-budget-impact-explorer .abi-phase {
+      flex-shrink: 0;
+      border: 1px solid rgba(152, 134, 66, .25);
+      border-radius: 999px;
+      background: #fff;
+      padding: 5px 11px;
+      color: #66591f;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    #as-budget-impact-explorer .abi-card-list {
+      margin-top: 30px;
+    }
+
+    #as-budget-impact-explorer .abi-list-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    #as-budget-impact-explorer .abi-list-head p {
+      margin: 0;
+    }
+
+    #as-budget-impact-explorer .abi-list-title {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    #as-budget-impact-explorer .abi-list-note {
+      margin-top: 4px !important;
+      color: rgba(23, 23, 23, .46);
+      font-size: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      padding-top: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-dept-card {
+      min-width: 0;
+      border: 1px solid rgba(23, 23, 23, .08);
+      border-radius: 17px;
+      background: #faf9f5;
+      padding: 16px;
+      color: #171717;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    #as-budget-impact-explorer .abi-dept-card:hover,
+    #as-budget-impact-explorer .abi-dept-card:focus-visible {
+      border-color: rgba(23, 23, 23, .22);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+    }
+
+    #as-budget-impact-explorer .abi-dept-card.is-selected {
+      border-color: rgba(23, 23, 23, .3);
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+    }
+
+    #as-budget-impact-explorer .abi-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+
+    #as-budget-impact-explorer .abi-card-badges {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      min-height: 23px;
+    }
+
+    #as-budget-impact-explorer .abi-mini-badge {
+      border-radius: 999px;
+      background: rgba(23, 23, 23, .06);
+      padding: 4px 7px;
+      color: rgba(23, 23, 23, .52);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-mini-badge.is-gold {
+      background: rgba(152, 134, 66, .13);
+      color: #66591f;
+    }
+
+    #as-budget-impact-explorer .abi-card-name {
+      min-height: 44px;
+      margin: 12px 0 0;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    #as-budget-impact-explorer .abi-card-values {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-card-share {
+      color: rgba(23, 23, 23, .48);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    #as-budget-impact-explorer .abi-card-dollars {
+      font-size: 16px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #as-budget-impact-explorer .abi-validation {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    #as-budget-impact-explorer .abi-validation-card {
+      border-radius: 32px;
+      padding: 34px 38px;
+    }
+
+    #as-budget-impact-explorer .abi-validation-card:first-child {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    #as-budget-impact-explorer .abi-validation-card:last-child {
+      background: #e9e5da;
+    }
+
+    #as-budget-impact-explorer .abi-validation-card h2 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.1;
+      letter-spacing: -.04em;
+    }
+
+    #as-budget-impact-explorer .abi-validation-card p {
+      max-width: 580px;
+      margin: 14px 0 0;
+      line-height: 1.7;
+      opacity: .76;
+    }
+
+    #as-budget-impact-explorer .abi-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 44px;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      color: rgba(23, 23, 23, .52);
+      font-size: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-footer p {
+      margin: 0;
+    }
+
+    #as-budget-impact-explorer .abi-overlay {
+      position: fixed;
+      z-index: 9998;
+      inset: 0;
+      visibility: hidden;
+      background: rgba(0, 0, 0, .36);
+      opacity: 0;
+      transition: opacity 200ms ease, visibility 200ms ease;
+    }
+
+    #as-budget-impact-explorer .abi-overlay.is-open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #as-budget-impact-explorer .abi-drawer {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      right: 0;
+      width: min(580px, 100%);
+      height: 100vh;
+      overflow-y: auto;
+      border-left: 1px solid var(--line);
+      background: #f8f6f0;
+      color: #171717;
+      transform: translateX(102%);
+      transition: transform 260ms ease;
+      box-shadow: -24px 0 70px rgba(0, 0, 0, .18);
+    }
+
+    #as-budget-impact-explorer .abi-drawer.is-open {
+      transform: translateX(0);
+    }
+
+    #as-budget-impact-explorer .abi-drawer-close {
+      position: sticky;
+      z-index: 3;
+      top: 14px;
+      float: right;
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      margin: 14px 14px 0 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: #171717;
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+    }
+
+    #as-budget-impact-explorer .abi-drawer-head {
+      clear: both;
+      border-bottom: 1px solid var(--line);
+      padding: 18px 34px 26px;
+    }
+
+    #as-budget-impact-explorer .abi-drawer-head h2 {
+      margin: 10px 0 0;
+      font-size: 34px;
+      line-height: 1.08;
+      letter-spacing: -.045em;
+    }
+
+    #as-budget-impact-explorer .abi-drawer-head p:last-child {
+      margin: 9px 0 0;
+      color: rgba(23, 23, 23, .62);
+    }
+
+    #as-budget-impact-explorer .abi-drawer-body {
+      display: grid;
+      gap: 18px;
+      padding: 26px 34px 42px;
+    }
+
+    #as-budget-impact-explorer .abi-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    #as-budget-impact-explorer .abi-detail-card,
+    #as-budget-impact-explorer .abi-box {
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fff;
+      padding: 18px;
+    }
+
+    #as-budget-impact-explorer .abi-detail-card.is-gold {
+      border-color: var(--gold);
+      background: var(--gold);
+      color: #fff;
+    }
+
+    #as-budget-impact-explorer .abi-detail-card p {
+      margin: 0;
+    }
+
+    #as-budget-impact-explorer .abi-detail-card p:first-child {
+      color: rgba(23, 23, 23, .5);
+      font-size: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-detail-card.is-gold p:first-child {
+      color: rgba(255, 255, 255, .68);
+    }
+
+    #as-budget-impact-explorer .abi-detail-card p:last-child {
+      margin-top: 7px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    #as-budget-impact-explorer .abi-hypothetical {
+      border-color: rgba(152, 134, 66, .3);
+      background: rgba(152, 134, 66, .11);
+    }
+
+    #as-budget-impact-explorer .abi-box-label {
+      margin: 0;
+      color: rgba(23, 23, 23, .5);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    #as-budget-impact-explorer .abi-hypothetical h3 {
+      margin: 12px 0 0;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    #as-budget-impact-explorer .abi-box-copy {
+      margin: 8px 0 0;
+      color: rgba(23, 23, 23, .66);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    #as-budget-impact-explorer .abi-level {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .82);
+      padding: 5px 9px;
+      color: rgba(23, 23, 23, .62);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    #as-budget-impact-explorer .abi-lines {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #as-budget-impact-explorer .abi-lines li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-top: 1px solid rgba(23, 23, 23, .08);
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    #as-budget-impact-explorer .abi-lines li:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    #as-budget-impact-explorer .abi-line-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    #as-budget-impact-explorer .abi-lines strong {
+      flex-shrink: 0;
+      color: rgba(23, 23, 23, .68);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #as-budget-impact-explorer .abi-accuracy {
+      border-color: #171717;
+      background: #171717;
+      color: #fff;
+    }
+
+    #as-budget-impact-explorer .abi-accuracy .abi-box-label {
+      color: var(--gold-light);
+    }
+
+    #as-budget-impact-explorer .abi-accuracy .abi-box-copy {
+      color: rgba(255, 255, 255, .72);
+    }
+
+    #as-budget-impact-explorer .abi-examples {
+      display: grid;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    #as-budget-impact-explorer .abi-examples a {
+      color: #171717;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration-color: var(--gold);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+    #as-budget-impact-explorer .abi-fund-context {
+      border-color: rgba(53, 102, 168, .22);
+      background: rgba(53, 102, 168, .08);
+    }
+
+    #as-budget-impact-explorer .abi-fund-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 980px) {
+      #as-budget-impact-explorer .abi-intro,
+      #as-budget-impact-explorer .abi-control-chart {
+        grid-template-columns: 1fr;
+      }
+
+      #as-budget-impact-explorer .abi-control-chart {
+        padding: 34px;
+      }
+
+      #as-budget-impact-explorer .abi-chart-side {
+        border-top: 1px solid rgba(255, 255, 255, .10);
+        border-left: 0;
+        padding-top: 28px;
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: 700px) {
+      #as-budget-impact-explorer .abi-header-inner,
+      #as-budget-impact-explorer .abi-page {
+        width: min(100% - 28px, 1380px);
+      }
+
+      #as-budget-impact-explorer .abi-header-inner {
+        min-height: 72px;
+      }
+
+      #as-budget-impact-explorer .abi-badge {
+        display: none;
+      }
+
+      #as-budget-impact-explorer .abi-wordmark strong {
+        font-size: 13px;
+      }
+
+      #as-budget-impact-explorer .abi-wordmark span:last-child {
+        display: none;
+      }
+
+      #as-budget-impact-explorer .abi-lede {
+        font-size: 16px;
+      }
+
+      #as-budget-impact-explorer .abi-main-card,
+      #as-budget-impact-explorer .abi-impact-panel,
+      #as-budget-impact-explorer .abi-validation-card {
+        border-radius: 24px;
+      }
+
+      #as-budget-impact-explorer .abi-control-chart,
+      #as-budget-impact-explorer .abi-impact-panel {
+        padding: 24px;
+      }
+
+      #as-budget-impact-explorer .abi-summaries,
+      #as-budget-impact-explorer .abi-metrics,
+      #as-budget-impact-explorer .abi-card-grid,
+      #as-budget-impact-explorer .abi-validation,
+      #as-budget-impact-explorer .abi-detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #as-budget-impact-explorer .abi-metric {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, .10);
+      }
+
+      #as-budget-impact-explorer .abi-metric:last-child {
+        border-bottom: 0;
+      }
+
+      #as-budget-impact-explorer .abi-chart-head,
+      #as-budget-impact-explorer .abi-mode-note,
+      #as-budget-impact-explorer .abi-footer {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      #as-budget-impact-explorer .abi-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #as-budget-impact-explorer .abi-chart-wrap {
+        height: 340px;
+      }
+
+      #as-budget-impact-explorer .abi-phase {
+        align-self: flex-start;
+      }
+
+      #as-budget-impact-explorer .abi-list-head > p:last-child {
+        display: none;
+      }
+
+      #as-budget-impact-explorer .abi-validation-card {
+        padding: 28px;
+      }
+
+      #as-budget-impact-explorer .abi-drawer-head,
+      #as-budget-impact-explorer .abi-drawer-body {
+        padding-right: 22px;
+        padding-left: 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #as-budget-impact-explorer *,
+      #as-budget-impact-explorer *::before,
+      #as-budget-impact-explorer *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body style="margin:0">
+  <div id="as-budget-impact-explorer">
+    <header class="abi-header">
+      <div class="abi-header-inner">
+        <div class="abi-wordmark" aria-label="City of Altamonte Springs">
+          <span class="abi-mark" aria-hidden="true">AS</span>
+          <span>
+            <strong>City of Altamonte Springs</strong>
+            <span>Budget Impact Explorer</span>
+          </span>
+        </div>
+        <div class="abi-header-actions">
+          <span class="abi-badge">Working concept</span>
+          <a class="abi-link" href="https://www.altamonte.org/DocumentCenter/View/10841/2026-Annual-Budget" target="_blank" rel="noreferrer">Source budget</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="abi-page">
+      <section class="abi-intro">
+        <div>
+          <p class="abi-eyebrow">Fiscal Year 2025 / 2026 Commission Adopted Annual Budget</p>
+          <h1>See what a revenue change means.</h1>
+        </div>
+        <p class="abi-lede">Move one control to explore a modeled change in property-tax revenue. Dollar effects are calculated from the adopted budget. Service outcomes require City review.</p>
+      </section>
+
+      <section class="abi-main-card" aria-label="Property-tax revenue model">
+        <div class="abi-control-chart">
+          <div class="abi-control">
+            <div class="abi-control-label-row">
+              <span class="abi-control-label">Modeled property-tax revenue change</span>
+              <span class="abi-step-badge">5% increments</span>
+            </div>
+            <div class="abi-percent"><span id="abi-percent">10%</span><span class="abi-down" aria-hidden="true">↓</span></div>
+            <div class="abi-slider-wrap">
+              <label for="abi-range" class="abi-control-label">Property-tax revenue reduction percentage</label>
+              <input id="abi-range" class="abi-range" type="range" min="0" max="100" step="5" value="10">
+              <div class="abi-range-labels"><span>No change</span><span>100% reduction</span></div>
+            </div>
+            <div class="abi-summaries">
+              <div class="abi-summary">
+                <p class="abi-summary-label">Revenue decrease</p>
+                <p id="abi-revenue-loss" class="abi-summary-value">$2,024,607</p>
+              </div>
+              <div class="abi-summary">
+                <p class="abi-summary-label">Expenditures over revenues</p>
+                <p id="abi-total-gap" class="abi-summary-value">$4,305,389</p>
+                <p class="abi-summary-note">Includes the adopted $2,280,782 difference.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="abi-chart-side">
+            <div class="abi-chart-head">
+              <div>
+                <p class="abi-chart-kicker">Department impact</p>
+                <p id="abi-chart-title" class="abi-chart-title">Public safety affected later</p>
+              </div>
+              <div class="abi-tabs" role="tablist" aria-label="Impact model">
+                <button class="abi-tab" type="button" role="tab" data-mode="service-priority" aria-selected="true">Service priority</button>
+                <button class="abi-tab" type="button" role="tab" data-mode="budget-share" aria-selected="false">Budget share</button>
+              </div>
+            </div>
+            <div id="abi-chart-wrap" class="abi-chart-wrap">
+              <svg id="abi-chart" class="abi-chart" viewBox="0 0 320 320" role="img" aria-labelledby="abi-chart-accessible-title abi-chart-accessible-description">
+                <title id="abi-chart-accessible-title">Modeled department impact</title>
+                <desc id="abi-chart-accessible-description">Select a department slice for detailed budget and service information.</desc>
+                <g id="abi-slices"></g>
+              </svg>
+              <div class="abi-chart-center" aria-live="polite">
+                <span id="abi-center-value" class="abi-center-value">$2M</span>
+                <span id="abi-center-label" class="abi-center-label">Modeled revenue decrease</span>
+              </div>
+              <div id="abi-tooltip" class="abi-tooltip" role="status" aria-live="polite">
+                <p id="abi-tooltip-name" class="abi-tooltip-name"></p>
+                <p id="abi-tooltip-value" class="abi-tooltip-value"></p>
+                <p id="abi-tooltip-share" class="abi-tooltip-share"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="abi-metrics">
+          <div class="abi-metric"><p class="abi-metric-label">Adopted property-tax revenue</p><p class="abi-metric-value">$20,246,071</p></div>
+          <div class="abi-metric"><p class="abi-metric-label">General Fund revenues</p><p class="abi-metric-value">$47,319,091</p></div>
+          <div class="abi-metric"><p class="abi-metric-label">General Fund expenditures</p><p class="abi-metric-value">$49,599,873</p></div>
+        </div>
+      </section>
+
+      <details class="abi-details">
+        <summary>What does “expenditures over revenues” mean?</summary>
+        <div class="abi-details-copy">
+          <p>The official budget line is “Excess (Deficiency) of Revenues Over (Under) Expenditures.” The 2026 Commission Adopted General Fund shows $47,319,091 in Total Revenues and $49,599,873 in Total Expenditures.</p>
+          <p>The $2,280,782 difference is the Net Change in Fund Balance. It reduces Fund balance from $18,703,260 at the Beginning of Year to $16,422,478 at the End of Year.</p>
+        </div>
+      </details>
+
+      <section class="abi-impact-panel">
+        <p class="abi-eyebrow">Budget and service-impact views</p>
+        <h2 id="abi-impact-heading">If public safety is affected later</h2>
+        <div class="abi-mode-note">
+          <p id="abi-mode-note">This hypothetical scenario protects Police in the earlier response phase, introduces Police support costs later and places sworn operations last. It is not an approved City reduction plan.</p>
+          <span id="abi-phase" class="abi-phase">Earlier response: Police protected</span>
+        </div>
+
+        <details id="abi-method" class="abi-method">
+          <summary>How the service-priority scenario works</summary>
+          <p class="abi-method-copy">Through a 25% property-tax revenue decrease, Police receives no modeled reduction. From 30% through 50%, Police enters at 25% of the weight applied to other departments. Above 50%, Police enters at 65% of that weight. Within each phase, allocations follow adopted General Fund operating amounts. These thresholds are concept assumptions pending City review.</p>
+        </details>
+
+        <div class="abi-card-list">
+          <div class="abi-list-head">
+            <div>
+              <p id="abi-list-title" class="abi-list-title">Hypothetical priority allocation</p>
+              <p class="abi-list-note">Select a pie slice or department card for supporting detail.</p>
+            </div>
+            <p class="abi-eyebrow">Share · Dollars</p>
+          </div>
+          <div id="abi-card-grid" class="abi-card-grid"></div>
+        </div>
+      </section>
+
+      <section class="abi-validation">
+        <div class="abi-validation-card">
+          <h2>What this screen can say</h2>
+          <p>It can calculate the revenue decrease, show the modeled amount by department and trace every adopted amount to the budget.</p>
+        </div>
+        <div class="abi-validation-card">
+          <h2>What still needs validation</h2>
+          <p>Department leaders must confirm which positions, programs, hours or service levels could change at each funding threshold.</p>
+        </div>
+      </section>
+
+      <footer class="abi-footer">
+        <p>Data source: City of Altamonte Springs Fiscal Year 2025 / 2026 Annual Budget.</p>
+        <p>Concept model. No budget decision or service reduction is represented.</p>
+      </footer>
+    </main>
+
+    <div id="abi-overlay" class="abi-overlay" aria-hidden="true"></div>
+    <aside id="abi-drawer" class="abi-drawer" role="dialog" aria-modal="true" aria-labelledby="abi-drawer-title" aria-hidden="true">
+      <button id="abi-drawer-close" class="abi-drawer-close" type="button" aria-label="Close department detail">×</button>
+      <div class="abi-drawer-head">
+        <p class="abi-eyebrow">Department detail</p>
+        <h2 id="abi-drawer-title"></h2>
+        <p>Adopted budget facts and a hypothetical service estimate for the selected scenario.</p>
+      </div>
+      <div id="abi-drawer-body" class="abi-drawer-body"></div>
+    </aside>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    const PROPERTY_TAX_REVENUE = 20246071;
+    const GENERAL_FUND_REVENUE = 47319091;
+    const GENERAL_FUND_EXPENDITURES = 49599873;
+    const OPERATING_TOTAL = 49341373;
+    const EXISTING_GAP = GENERAL_FUND_EXPENDITURES - GENERAL_FUND_REVENUE;
+    const BEGINNING_FUND_BALANCE = 18703260;
+    const ENDING_FUND_BALANCE = 16422478;
+    const BUILDING_INSPECTION_FUND = 2706130;
+    const POLICE_PROTECTION_THRESHOLD = PROPERTY_TAX_REVENUE * 0.25;
+    const POLICE_SUPPORT_THRESHOLD = PROPERTY_TAX_REVENUE * 0.5;
+
+    const departments = [
+      {
+        name: "Administration",
+        shortName: "Administration",
+        budget: 9115038,
+        color: "#b24c73",
+        budgetLines: [
+          ["City Manager's Office", 1028875],
+          ["Legal Services", 766148],
+          ["City Clerk", 814807],
+          ["Human Resources", 1106747],
+          ["Central Lines", 3224619],
+          ["Accounting", 810345],
+          ["Procurement", 364104],
+          ["Revenue Collection", 721223],
+          ["Risk Management", 278170]
+        ],
+        impact: {
+          headline: "Vacant positions and discretionary operating costs could be reviewed first.",
+          detail: "Comparable cities have used hiring controls and reductions to contractual services, commodities and recruitment before changing public-facing services."
+        }
+      },
+      {
+        name: "Police",
+        shortName: "Police",
+        budget: 16432580,
+        color: "#988642",
+        budgetLines: [
+          ["Administration", 892888],
+          ["Investigations", 3688615],
+          ["Special Operations", 3885167],
+          ["Operations", 6002509],
+          ["Management Support", 1923401],
+          ["2nd Dollar Training", 40000]
+        ],
+        impact: {
+          headline: "Vacancies, training, equipment replacement or overtime could be reviewed.",
+          detail: "The sequence would depend on public-safety requirements, staffing levels, labor obligations and operational priorities."
+        }
+      },
+      {
+        name: "Growth Management",
+        shortName: "Growth",
+        budget: 1427346,
+        color: "#2f766d",
+        budgetLines: [["Growth Management", 1427346]],
+        impact: {
+          headline: "Vacancy controls or reduced consultant support could lengthen review timelines.",
+          detail: "The effect would depend on application volume, required reviews and which costs can be changed during the fiscal year."
+        }
+      },
+      {
+        name: "Building and Fire Safety",
+        shortName: "Building & Fire",
+        budget: 173937,
+        color: "#c45f43",
+        budgetLines: [["Code Enforcement", 173937]],
+        impact: {
+          headline: "Code Enforcement response or case follow-up could take longer.",
+          detail: "This General Fund amount does not represent the separate Building Inspection Fund shown elsewhere in the adopted budget."
+        }
+      },
+      {
+        name: "Technology, Communications and Strategic Initiatives",
+        shortName: "TCSI",
+        budget: 6695053,
+        color: "#3566a8",
+        budgetLines: [
+          ["Administration", 1240989],
+          ["Events", 1380028],
+          ["Information Services", 2749047],
+          ["Library", 540055],
+          ["Science Incubator", 379404],
+          ["AGīL", 405530]
+        ],
+        impact: {
+          headline: "Library hours, events or program availability could be reduced.",
+          detail: "Other cities facing shortfalls have reduced library operating days or hours and scaled back programmatic investments."
+        }
+      },
+      {
+        name: "Public Works",
+        shortName: "Public Works",
+        budget: 979428,
+        color: "#7856a3",
+        budgetLines: [["Streets", 979428]],
+        impact: {
+          headline: "Street repairs or planned work could be deferred or completed less frequently.",
+          detail: "Comparable city proposals have paired General Fund pressure with fewer road repairs or delayed noncritical capital and programmatic work."
+        }
+      },
+      {
+        name: "Leisure Services",
+        shortName: "Leisure",
+        budget: 6195132,
+        color: "#d58a2b",
+        budgetLines: [
+          ["Administration", 1009974],
+          ["Eastmonte Park", 80513],
+          ["Merrill Park", 29700],
+          ["Westmonte Park", 181800],
+          ["Altamonte Recreation", 3379771],
+          ["Lake Brantley Sports Complex", 75521],
+          ["Lake Lotus Park", 278190],
+          ["Park Rangers", 1159663]
+        ],
+        impact: {
+          headline: "Recreation center hours or program sessions could be reduced.",
+          detail: "A hypothetical response could include fewer sessions for the summer camp program at Westmonte Recreation Center or Teen Camp program at Teague Middle School. Those programs are identified in the adopted budget, but no reduction has been proposed by the City."
+        }
+      },
+      {
+        name: "Maintenance Services",
+        shortName: "Maintenance",
+        budget: 8322859,
+        color: "#607b3b",
+        budgetLines: [
+          ["Park Landscape Management and Operations", 3078539],
+          ["Fleet Maintenance", 1723300],
+          ["Facilities Maintenance", 3466020],
+          ["Tree Bank", 55000]
+        ],
+        impact: {
+          headline: "Park, facility or fleet maintenance cycles could become less frequent.",
+          detail: "Other municipal reviews have identified reduced park maintenance and deferred repairs as possible effects of General Fund reductions."
+        }
+      }
+    ];
+
+    const root = document.getElementById("as-budget-impact-explorer");
+    const range = root.querySelector("#abi-range");
+    const sliceGroup = root.querySelector("#abi-slices");
+    const chartWrap = root.querySelector("#abi-chart-wrap");
+    const tooltip = root.querySelector("#abi-tooltip");
+    const overlay = root.querySelector("#abi-overlay");
+    const drawer = root.querySelector("#abi-drawer");
+    const closeButton = root.querySelector("#abi-drawer-close");
+    const cards = root.querySelector("#abi-card-grid");
+    const state = {
+      reduction: 10,
+      mode: "service-priority",
+      selectedName: null,
+      hoveredName: null,
+      model: [],
+      displayedValues: [],
+      animationFrame: null,
+      lastFocusedElement: null
+    };
+
+    const money = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0
+    });
+
+    const compactMoney = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      maximumFractionDigits: 1
+    });
+
+    function distributeByWeight(amount, policeWeight) {
+      const weightedTotal = departments.reduce(function (total, department) {
+        return total + department.budget * (department.name === "Police" ? policeWeight : 1);
+      }, 0);
+
+      return departments.map(function (department) {
+        return {
+          name: department.name,
+          amount: weightedTotal === 0
+            ? 0
+            : amount * (department.budget * (department.name === "Police" ? policeWeight : 1)) / weightedTotal
+        };
+      });
+    }
+
+    function servicePriorityAmounts(revenueLoss) {
+      const amounts = {};
+      departments.forEach(function (department) { amounts[department.name] = 0; });
+      const phases = [
+        { amount: Math.min(revenueLoss, POLICE_PROTECTION_THRESHOLD), policeWeight: 0 },
+        {
+          amount: Math.min(
+            Math.max(revenueLoss - POLICE_PROTECTION_THRESHOLD, 0),
+            POLICE_SUPPORT_THRESHOLD - POLICE_PROTECTION_THRESHOLD
+          ),
+          policeWeight: 0.25
+        },
+        { amount: Math.max(revenueLoss - POLICE_SUPPORT_THRESHOLD, 0), policeWeight: 0.65 }
+      ];
+
+      phases.forEach(function (phase) {
+        distributeByWeight(phase.amount, phase.policeWeight).forEach(function (allocation) {
+          amounts[allocation.name] += allocation.amount;
+        });
+      });
+      return amounts;
+    }
+
+    function getModel() {
+      const revenueLoss = PROPERTY_TAX_REVENUE * (state.reduction / 100);
+      const priorityAmounts = servicePriorityAmounts(revenueLoss);
+      return departments.map(function (department) {
+        const proportionalAmount = revenueLoss * (department.budget / OPERATING_TOTAL);
+        const modeledReduction = state.mode === "service-priority"
+          ? priorityAmounts[department.name]
+          : proportionalAmount;
+        return Object.assign({}, department, {
+          modeledReduction: modeledReduction,
+          share: revenueLoss === 0 ? department.budget / OPERATING_TOTAL : modeledReduction / revenueLoss,
+          pieValue: revenueLoss === 0 ? department.budget : modeledReduction
+        });
+      });
+    }
+
+    function polar(cx, cy, radius, angle) {
+      const radians = (angle - 90) * Math.PI / 180;
+      return { x: cx + radius * Math.cos(radians), y: cy + radius * Math.sin(radians) };
+    }
+
+    function donutPath(cx, cy, outerRadius, innerRadius, startAngle, endAngle) {
+      if (endAngle - startAngle <= 0.001) return "";
+      const outerStart = polar(cx, cy, outerRadius, endAngle);
+      const outerEnd = polar(cx, cy, outerRadius, startAngle);
+      const innerStart = polar(cx, cy, innerRadius, startAngle);
+      const innerEnd = polar(cx, cy, innerRadius, endAngle);
+      const largeArc = endAngle - startAngle <= 180 ? 0 : 1;
+      return [
+        "M", outerStart.x, outerStart.y,
+        "A", outerRadius, outerRadius, 0, largeArc, 0, outerEnd.x, outerEnd.y,
+        "L", innerStart.x, innerStart.y,
+        "A", innerRadius, innerRadius, 0, largeArc, 1, innerEnd.x, innerEnd.y,
+        "Z"
+      ].join(" ");
+    }
+
+    function ensureSlices() {
+      if (sliceGroup.children.length) return;
+      departments.forEach(function (department, index) {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("class", "abi-slice");
+        path.setAttribute("fill", department.color);
+        path.setAttribute("stroke", "#171717");
+        path.setAttribute("stroke-width", "3");
+        path.setAttribute("tabindex", "0");
+        path.setAttribute("role", "button");
+        path.setAttribute("aria-label", "Open " + department.name + " department detail");
+        path.dataset.index = index;
+        path.addEventListener("mouseenter", function (event) {
+          state.hoveredName = department.name;
+          updateHighlight();
+          showTooltip(department, event);
+        });
+        path.addEventListener("mousemove", function (event) {
+          positionTooltip(event);
+        });
+        path.addEventListener("mouseleave", function () {
+          state.hoveredName = null;
+          updateHighlight();
+          hideTooltip();
+        });
+        path.addEventListener("focus", function () {
+          state.hoveredName = department.name;
+          updateHighlight();
+          showTooltip(department, null);
+        });
+        path.addEventListener("blur", function () {
+          state.hoveredName = null;
+          updateHighlight();
+          hideTooltip();
+        });
+        path.addEventListener("click", function () { openDrawer(department.name); });
+        path.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDrawer(department.name);
+          }
+        });
+        sliceGroup.appendChild(path);
+      });
+    }
+
+    function drawPie(values) {
+      const total = values.reduce(function (sum, value) { return sum + Math.max(0, value); }, 0);
+      const outerRadius = 112 + state.reduction * 0.13;
+      const innerRadius = 74;
+      const gap = 1.6;
+      let cursor = 0;
+      Array.from(sliceGroup.children).forEach(function (path, index) {
+        const value = Math.max(0, values[index] || 0);
+        const sweep = total > 0 ? (value / total) * 360 : 0;
+        const start = cursor + (sweep > gap ? gap / 2 : 0);
+        const end = cursor + sweep - (sweep > gap ? gap / 2 : 0);
+        path.setAttribute("d", donutPath(160, 160, outerRadius, innerRadius, start, end));
+        cursor += sweep;
+      });
+    }
+
+    function animatePie(targetValues) {
+      if (state.animationFrame) cancelAnimationFrame(state.animationFrame);
+      const startValues = state.displayedValues.length
+        ? state.displayedValues.slice()
+        : targetValues.map(function () { return 0; });
+      const startTime = performance.now();
+      const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 550;
+
+      function frame(now) {
+        const raw = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - raw, 3);
+        state.displayedValues = targetValues.map(function (target, index) {
+          return startValues[index] + (target - startValues[index]) * eased;
+        });
+        drawPie(state.displayedValues);
+        if (raw < 1) {
+          state.animationFrame = requestAnimationFrame(frame);
+        } else {
+          state.animationFrame = null;
+          state.displayedValues = targetValues.slice();
+        }
+      }
+      state.animationFrame = requestAnimationFrame(frame);
+    }
+
+    function priorityPhase() {
+      if (state.reduction === 0) return "No additional decrease";
+      if (state.reduction <= 25) return "Earlier response: Police protected";
+      if (state.reduction <= 50) return "Later response: Police support included";
+      return "Structural response: Police included at lower weight";
+    }
+
+    function renderCards() {
+      cards.innerHTML = "";
+      const revenueLoss = PROPERTY_TAX_REVENUE * (state.reduction / 100);
+      state.model.forEach(function (department) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "abi-dept-card" + (state.selectedName === department.name ? " is-selected" : "");
+        button.setAttribute("aria-label", "Open " + department.name + " department detail");
+        let badges = "";
+        if (department.name === "Building and Fire Safety") {
+          badges += '<span class="abi-mini-badge">GF portion only</span>';
+        }
+        if (state.mode === "service-priority" && department.name === "Police") {
+          badges += '<span class="abi-mini-badge is-gold">' +
+            (department.modeledReduction === 0 ? "Protected" : "Affected later") + "</span>";
+        }
+        button.innerHTML =
+          '<div class="abi-card-head">' +
+            '<span class="abi-dot" style="background:' + department.color + '"></span>' +
+            '<span class="abi-card-badges">' + badges + '<span aria-hidden="true">›</span></span>' +
+          '</div>' +
+          '<p class="abi-card-name">' + escapeHTML(department.name) + '</p>' +
+          '<div class="abi-card-values">' +
+            '<span class="abi-card-share">' + (revenueLoss === 0 ? "0.0" : (department.share * 100).toFixed(1)) + '%</span>' +
+            '<span class="abi-card-dollars">' + money.format(department.modeledReduction) + '</span>' +
+          '</div>';
+        button.addEventListener("mouseenter", function () { state.hoveredName = department.name; updateHighlight(); });
+        button.addEventListener("mouseleave", function () { state.hoveredName = null; updateHighlight(); });
+        button.addEventListener("focus", function () { state.hoveredName = department.name; updateHighlight(); });
+        button.addEventListener("blur", function () { state.hoveredName = null; updateHighlight(); });
+        button.addEventListener("click", function () { openDrawer(department.name); });
+        cards.appendChild(button);
+      });
+    }
+
+    function updateHighlight() {
+      const highlightedName = state.hoveredName || state.selectedName;
+      const highlighted = highlightedName
+        ? state.model.find(function (department) { return department.name === highlightedName; })
+        : null;
+      const activeName = highlighted && highlighted.pieValue > 0 ? highlighted.name : null;
+      Array.from(sliceGroup.children).forEach(function (path, index) {
+        const department = state.model[index];
+        path.classList.toggle("is-active", activeName === department.name);
+        path.classList.toggle("is-muted", Boolean(activeName && activeName !== department.name));
+      });
+      root.querySelector("#abi-center-value").textContent =
+        compactMoney.format(highlighted ? highlighted.modeledReduction : PROPERTY_TAX_REVENUE * (state.reduction / 100));
+      root.querySelector("#abi-center-label").textContent = highlighted
+        ? highlighted.modeledReduction === 0 && highlighted.name === "Police" && state.mode === "service-priority"
+          ? "Police protected in this phase"
+          : highlighted.shortName + " modeled decrease"
+        : "Modeled revenue decrease";
+    }
+
+    function showTooltip(department, event) {
+      const item = state.model.find(function (candidate) { return candidate.name === department.name; });
+      if (!item) return;
+      root.querySelector("#abi-tooltip-name").textContent = item.name;
+      root.querySelector("#abi-tooltip-value").textContent = money.format(item.modeledReduction);
+      root.querySelector("#abi-tooltip-share").textContent = item.modeledReduction === 0
+        ? "No modeled decrease"
+        : (item.share * 100).toFixed(1) + "% of modeled decrease";
+      tooltip.classList.add("is-open");
+      if (event) {
+        positionTooltip(event);
+      } else {
+        tooltip.style.left = "50%";
+        tooltip.style.top = "12px";
+        tooltip.style.transform = "translateX(-50%)";
+      }
+    }
+
+    function positionTooltip(event) {
+      if (!tooltip.classList.contains("is-open")) return;
+      const rect = chartWrap.getBoundingClientRect();
+      const width = tooltip.offsetWidth || 210;
+      const height = tooltip.offsetHeight || 82;
+      let left = event.clientX - rect.left + 14;
+      let top = event.clientY - rect.top - height - 12;
+      left = Math.max(8, Math.min(left, rect.width - width - 8));
+      top = Math.max(8, Math.min(top, rect.height - height - 8));
+      tooltip.style.left = left + "px";
+      tooltip.style.top = top + "px";
+      tooltip.style.transform = "none";
+    }
+
+    function hideTooltip() {
+      tooltip.classList.remove("is-open");
+    }
+
+    function render() {
+      state.model = getModel();
+      const revenueLoss = PROPERTY_TAX_REVENUE * (state.reduction / 100);
+      root.querySelector("#abi-percent").textContent = state.reduction + "%";
+      root.querySelector("#abi-revenue-loss").textContent = money.format(revenueLoss);
+      root.querySelector("#abi-total-gap").textContent = money.format(EXISTING_GAP + revenueLoss);
+      root.querySelector("#abi-chart-title").textContent = state.mode === "service-priority"
+        ? "Public safety affected later"
+        : "Adopted budget shares";
+      root.querySelector("#abi-impact-heading").textContent = state.mode === "service-priority"
+        ? "If public safety is affected later"
+        : "If the decrease follows adopted budget shares";
+      root.querySelector("#abi-mode-note").textContent = state.mode === "service-priority"
+        ? "This hypothetical scenario protects Police in the earlier response phase, introduces Police support costs later and places sworn operations last. It is not an approved City reduction plan."
+        : "This mathematical model distributes the decrease using each department’s adopted share of General Fund operating expenditures. It does not represent the City’s likely reduction order.";
+      root.querySelector("#abi-list-title").textContent = state.mode === "service-priority"
+        ? "Hypothetical priority allocation"
+        : "Proportional decrease by department";
+      const phase = root.querySelector("#abi-phase");
+      const method = root.querySelector("#abi-method");
+      phase.textContent = priorityPhase();
+      phase.style.display = state.mode === "service-priority" ? "" : "none";
+      method.style.display = state.mode === "service-priority" ? "" : "none";
+      root.querySelectorAll(".abi-tab").forEach(function (tab) {
+        tab.setAttribute("aria-selected", String(tab.dataset.mode === state.mode));
+      });
+      animatePie(state.model.map(function (department) { return department.pieValue; }));
+      renderCards();
+      updateHighlight();
+      if (state.selectedName) renderDrawer();
+    }
+
+    function scenarioFor(selected) {
+      const selectedReduction = selected.modeledReduction;
+      const selectedBudgetShare = selectedReduction / selected.budget;
+      let level;
+      let estimate;
+
+      if (state.mode === "service-priority" && selected.name === "Police") {
+        level = selectedReduction === 0 ? "Protected in this phase" : priorityPhase();
+      } else if (state.reduction === 0) {
+        level = "No additional decrease";
+      } else if (selectedBudgetShare <= 0.025) {
+        level = "Limited operating response";
+      } else if (selectedBudgetShare <= 0.05) {
+        level = "Moderate service pressure";
+      } else if (selectedBudgetShare <= 0.1) {
+        level = "Significant service pressure";
+      } else {
+        level = "Structural service pressure";
+      }
+
+      if (state.reduction === 0) {
+        estimate = null;
+      } else if (state.mode === "service-priority" && selected.name === "Police") {
+        if (selectedReduction === 0) {
+          estimate = {
+            headline: "No Police reduction is modeled in this earlier response phase.",
+            detail: "The service-priority scenario assigns the initial modeled decrease to other General Fund departments. Police support costs enter only after the first threshold."
+          };
+        } else if (state.reduction <= 50) {
+          estimate = {
+            headline: "Police support costs enter after the earlier response phase.",
+            detail: "Vacancies, civilian non-sworn positions, training, equipment replacement or overtime would be considered before sworn operations. This order is hypothetical and requires City review."
+          };
+        } else {
+          estimate = {
+            headline: "Police is included under structural service pressure.",
+            detail: "The scenario continues to weight Police below other departments and places sworn operations last. This is a modeling assumption, not an approved reduction plan."
+          };
+        }
+      } else if (selectedBudgetShare <= 0.025) {
+        estimate = {
+          headline: "Operating controls could be used before public-facing service changes.",
+          detail: "Comparable cities have started with vacant positions, purchasing, contracts and other discretionary costs. " + selected.impact.detail
+        };
+      } else if (selectedBudgetShare <= 0.05) {
+        estimate = selected.impact;
+      } else if (selectedBudgetShare <= 0.1) {
+        estimate = {
+          headline: "Several operating and service changes could be combined.",
+          detail: selected.impact.headline + " " + selected.impact.detail
+        };
+      } else {
+        estimate = {
+          headline: "Structural changes could be required to reach this modeled amount.",
+          detail: "Comparable municipal responses at sustained shortfalls have included position reductions, fewer operating days, facility closures and program elimination. " + selected.impact.detail
+        };
+      }
+
+      return { level: level, estimate: estimate, selectedBudgetShare: selectedBudgetShare };
+    }
+
+    function openDrawer(name) {
+      state.selectedName = name;
+      state.lastFocusedElement = document.activeElement;
+      renderCards();
+      updateHighlight();
+      renderDrawer();
+      overlay.classList.add("is-open");
+      drawer.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      drawer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeButton.focus();
+    }
+
+    function closeDrawer() {
+      state.selectedName = null;
+      overlay.classList.remove("is-open");
+      drawer.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      drawer.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      renderCards();
+      updateHighlight();
+      if (state.lastFocusedElement && typeof state.lastFocusedElement.focus === "function") {
+        state.lastFocusedElement.focus();
+      }
+    }
+
+    function renderDrawer() {
+      const selected = state.model.find(function (department) { return department.name === state.selectedName; });
+      if (!selected) return;
+      const scenario = scenarioFor(selected);
+      root.querySelector("#abi-drawer-title").textContent = selected.name;
+      const modeledLabel = state.mode === "service-priority"
+        ? "Modeled priority allocation"
+        : "Modeled proportional share";
+      let fundContext = "";
+      if (selected.name === "Building and Fire Safety") {
+        fundContext =
+          '<div class="abi-box abi-fund-context">' +
+            '<p class="abi-box-label">Fund context</p>' +
+            '<p class="abi-box-copy">The pie includes ' + money.format(selected.budget) + ' for Code Enforcement in the General Fund. The separate Building Inspection Fund contains ' + money.format(BUILDING_INSPECTION_FUND) + ' and is outside this General Fund model.</p>' +
+            '<div class="abi-fund-total"><span>Combined operating amount</span><strong>' + money.format(selected.budget + BUILDING_INSPECTION_FUND) + '</strong></div>' +
+          '</div>';
+      }
+
+      const hypothetical = state.reduction === 0
+        ? '<p class="abi-box-copy">No additional property-tax revenue decrease is modeled.</p>'
+        : '<h3>' + escapeHTML(scenario.estimate.headline) + '</h3>' +
+          '<p class="abi-box-copy">' + escapeHTML(scenario.estimate.detail) + '</p>' +
+          '<p class="abi-box-copy">This scenario equals ' + (scenario.selectedBudgetShare * 100).toFixed(1) + '% of this department’s adopted operating budget.</p>';
+
+      const lines = selected.budgetLines.map(function (line) {
+        return '<li><span class="abi-line-name"><span class="abi-dot" style="width:7px;height:7px;background:' + selected.color + '"></span>' +
+          escapeHTML(line[0]) + '</span><strong>' + money.format(line[1]) + '</strong></li>';
+      }).join("");
+
+      const accuracy = state.mode === "service-priority"
+        ? "This amount follows the service-priority concept assumptions shown on the main screen. It is not a City proposal, forecast or approved service reduction."
+        : "This amount is the department’s proportional share of the modeled property-tax revenue decrease. It does not represent the City’s likely reduction order.";
+
+      root.querySelector("#abi-drawer-body").innerHTML =
+        '<div class="abi-detail-grid">' +
+          '<div class="abi-detail-card"><p>Adopted operating budget</p><p>' + money.format(selected.budget) + '</p></div>' +
+          '<div class="abi-detail-card is-gold"><p>' + modeledLabel + '</p><p>' + money.format(selected.modeledReduction) + '</p></div>' +
+        '</div>' +
+        fundContext +
+        '<div class="abi-box abi-hypothetical">' +
+          '<div class="abi-detail-label-row"><p class="abi-box-label">Hypothetical estimate</p><span class="abi-level">' + escapeHTML(scenario.level) + '</span></div>' +
+          hypothetical +
+        '</div>' +
+        '<div class="abi-box"><p class="abi-box-label">2026 Commission Adopted operating expenditures</p><ul class="abi-lines">' + lines + '</ul></div>' +
+        '<div class="abi-box abi-accuracy"><p class="abi-box-label">Accuracy note</p><p class="abi-box-copy">' + escapeHTML(accuracy) + '</p></div>' +
+        '<div class="abi-box"><p class="abi-box-label">Comparable municipal examples</p>' +
+          '<div class="abi-examples">' +
+            '<a href="https://www.sandiego.gov/mayor/preliminary-budget-fy26-releases" target="_blank" rel="noreferrer">City of San Diego FY 2026 preliminary budget reductions</a>' +
+            '<a href="https://services.austintexas.gov/edims/document.cfm?id=125801" target="_blank" rel="noreferrer">City of Austin budget savings actions</a>' +
+            '<a href="https://www.seattle.gov/documents/departments/financedepartment/11adoptedbudget/introduction.pdf" target="_blank" rel="noreferrer">City of Seattle adopted budget reductions</a>' +
+          '</div>' +
+        '</div>' +
+        '<div><p class="abi-box-label">Required before public release</p><p class="abi-box-copy">Confirm feasible decision thresholds, affected service levels, timing, legal constraints and the responsible department reviewer. Replace each hypothetical estimate with a City-reviewed impact statement before publication.</p></div>';
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    range.addEventListener("input", function () {
+      state.reduction = Number(range.value);
+      render();
+    });
+
+    root.querySelectorAll(".abi-tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        state.mode = tab.dataset.mode;
+        render();
+      });
+    });
+
+    closeButton.addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && drawer.classList.contains("is-open")) closeDrawer();
+    });
+
+    ensureSlices();
+    render();
+  }());
+  </script>
+</body>
+</html>
