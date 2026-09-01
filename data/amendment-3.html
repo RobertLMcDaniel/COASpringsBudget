@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Property Tax Amendment 3 | City of Altamonte Springs</title>
+<style>
+:root{--bg:#f5f3ed;--ink:#171717;--gold:#988642;--gold2:#d8c779;--teal:#073f42;--line:rgba(23,23,23,.11);--muted:rgba(23,23,23,.64);--white:#fff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+a,summary{outline-color:var(--gold);outline-offset:3px}
+.wrap{width:min(1380px,calc(100% - 40px));margin:auto}
+.notice{background:var(--teal);color:#fff;border-bottom:1px solid rgba(255,255,255,.14)}
+.notice .wrap{display:flex;gap:12px;padding:15px 0;font-size:14px}
+.notice i{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);font-style:normal;font-weight:800}
+.notice p{margin:2px 0 0}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.head{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
+.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--gold);color:#fff;font-weight:800}
+.brand strong{display:block;font-size:15px}.brand small{display:block;margin-top:2px;color:rgba(23,23,23,.55)}
+.actions{display:flex;align-items:center;gap:14px}
+.badge{border:1px solid rgba(152,134,66,.28);border-radius:999px;background:rgba(152,134,66,.1);padding:5px 11px;color:#66591f;font-size:12px;font-weight:800}
+.source-link{color:inherit;font-size:14px;font-weight:700;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:4px}
+main{padding:48px 0 72px}
+.eyebrow{margin:0;color:#746528;font-size:11.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:52px;align-items:end}
+h1{margin:16px 0 0;font-size:clamp(48px,7vw,94px);line-height:.94;letter-spacing:-.06em}
+.lede{margin:0 0 4px;color:var(--muted);font-size:18px;line-height:1.7}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}.pill{border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 12px;font-size:12px;font-weight:700;color:rgba(23,23,23,.67)}
+.hero-card{margin-top:42px;border-radius:32px;background:var(--ink);color:#fff;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.12)}
+.hero-card-inner{display:grid;grid-template-columns:1.05fr .95fr}
+.hero-copy,.effective{padding:46px}.hero-copy h2{margin:14px 0 0;font-size:clamp(34px,4.5vw,58px);line-height:1.02;letter-spacing:-.05em}.hero-copy p:last-child{margin:22px 0 0;color:rgba(255,255,255,.66);line-height:1.7}
+.effective{border-left:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;justify-content:center}
+.effective small{color:rgba(255,255,255,.48);font-weight:800;letter-spacing:.14em;text-transform:uppercase}.effective strong{margin-top:12px;color:var(--gold2);font-size:clamp(38px,5vw,66px);line-height:1;letter-spacing:-.055em}.effective p{margin:15px 0 0;color:rgba(255,255,255,.55);font-size:13px}
+.section{margin-top:72px}.section-head{display:grid;grid-template-columns:1fr .65fr;gap:40px;align-items:end}.section-head h2{margin:10px 0 0;font-size:clamp(36px,5vw,62px);line-height:1;letter-spacing:-.055em}.section-head>p{margin:0;color:var(--muted);font-size:15px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}.card{border:1px solid var(--line);border-radius:22px;background:#fff;padding:28px}.num{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.card h3{margin:12px 0 0;font-size:24px;line-height:1.15;letter-spacing:-.035em}.card p{margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.7}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);margin-top:30px;border:1px solid var(--line);border-radius:24px;background:#fff;overflow:hidden}.time{min-height:205px;padding:28px;border-right:1px solid var(--line)}.time:last-child{border-right:0}.time .year{color:var(--gold);font-size:13px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.time .value{margin-top:13px;font-size:36px;font-weight:800;letter-spacing:-.045em}.time p{margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.65}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:30px}.service{min-height:145px;border-radius:20px;background:#ebe8df;padding:22px}.service strong{display:block}.service span{display:block;margin-top:9px;color:var(--muted);font-size:13px}
+.ballot{margin-top:30px;border-radius:30px;background:var(--gold);color:#fff;padding:42px}.ballot .eyebrow{color:rgba(255,255,255,.72)}.ballot h3{margin:12px 0 0;font-size:clamp(30px,4vw,48px);line-height:1.05;letter-spacing:-.045em}.ballot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:28px}.ballot-item{border:1px solid rgba(255,255,255,.25);border-radius:17px;background:rgba(255,255,255,.10);padding:19px}.ballot-item strong{display:block}.ballot-item span{display:block;margin-top:7px;color:rgba(255,255,255,.76);font-size:13px;line-height:1.55}
+.note{margin-top:28px;border:1px solid rgba(152,134,66,.25);border-radius:18px;background:rgba(152,134,66,.09);padding:18px 20px;color:rgba(23,23,23,.68);font-size:14px;line-height:1.7}.note strong{color:var(--ink)}
+.faq{margin-top:74px}.faq-list{margin-top:28px;border-top:1px solid var(--line)}details{border-bottom:1px solid var(--line)}summary{display:flex;justify-content:space-between;gap:20px;padding:22px 4px;cursor:pointer;list-style:none;font-size:18px;font-weight:800}summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--gold);font-size:28px;font-weight:400}details[open] summary:after{content:"–"}.answer{max-width:970px;padding:0 4px 24px;color:var(--muted);font-size:15px;line-height:1.75}
+.source-card{margin-top:58px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:1px solid var(--line);border-radius:24px;background:#fff;padding:26px 28px}.source-card p{margin:0}.source-card .sub{margin-top:4px;color:var(--muted);font-size:13px}.button{display:inline-flex;align-items:center;min-height:44px;border-radius:999px;background:var(--ink);padding:10px 17px;color:#fff;font-size:13px;font-weight:800;text-decoration:none}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;gap:20px;color:rgba(23,23,23,.52);font-size:12px}
+@media(max-width:980px){.hero,.section-head,.hero-card-inner{grid-template-columns:1fr}.effective{border-left:0;border-top:1px solid rgba(255,255,255,.1)}.services{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:1fr}.time{border-right:0;border-bottom:1px solid var(--line)}.time:last-child{border-bottom:0}}
+@media(max-width:700px){.wrap{width:min(100% - 28px,1380px)}.badge{display:none}.brand small{display:none}main{padding-top:34px}.lede{font-size:16px}.grid,.services,.ballot-grid{grid-template-columns:1fr}.hero-card,.ballot{border-radius:24px}.hero-copy,.effective,.ballot{padding:28px}.source-card,footer{align-items:stretch;flex-direction:column}.button{align-self:flex-start}}
+</style>
+</head>
+<body>
+
+<div class="notice">
+  <div class="wrap">
+    <i aria-hidden="true">i</i>
+    <p><strong>Florida voters will decide on Amendment 3 in the November 2026 general election.</strong> This page provides factual information only. The City of Altamonte Springs does not advocate for or against any ballot measure.</p>
+  </div>
+</div>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="../index.html">
+      <span class="mark">AS</span>
+      <span><strong>City of Altamonte Springs</strong><small>Property Tax Amendment 3 Information</small></span>
+    </a>
+    <div class="actions">
+      <span class="badge">Informational resource</span>
+      <a class="source-link" href="amendment-3-bill.pdf" target="_blank" rel="noreferrer">View source resolution</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+  <div>
+    <p class="eyebrow">2026 Florida Constitutional Amendment</p>
+    <h1>Property Tax Amendment 3</h1>
+    <div class="meta">
+      <span class="pill">House Joint Resolution 1F</span>
+      <span class="pill">Article VII &amp; Article XII</span>
+      <span class="pill">Effective Jan. 1, 2027 if approved</span>
+    </div>
+  </div>
+  <p class="lede">Amendment 3 proposes changes to property assessment limits, homestead exemptions and the permitted uses of certain county and municipal property-tax revenues.</p>
+</section>
+
+<section class="hero-card">
+  <div class="hero-card-inner">
+    <div class="hero-copy">
+      <p class="eyebrow" style="color:#d8c779">At a glance</p>
+      <h2>Changes to assessments, exemptions and local property-tax revenue.</h2>
+      <p>The resolution also directs the Legislature to create a trust fund to assist with implementation if the amendment is adopted.</p>
+    </div>
+    <div class="effective">
+      <small>If approved</small>
+      <strong>Jan. 1, 2027</strong>
+      <p>The constitutional changes described in the resolution would take effect on this date.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">What would change</p><h2>Four major parts of the proposal</h2></div>
+    <p>These summaries are based on House Joint Resolution 1F and are intended as plain-language explanations, not individualized tax advice.</p>
+  </div>
+
+  <div class="grid">
+    <article class="card">
+      <span class="num">01 · Assessment limits</span>
+      <h3>Some non-homestead assessment increases would be capped at 5%.</h3>
+      <p>Beginning January 1, 2027, the annual assessment increase limit for specified non-homestead real property would change from 10% to 5% for levies other than school district levies.</p>
+    </article>
+
+    <article class="card">
+      <span class="num">02 · Homestead exemption</span>
+      <h3>The homestead exemption would increase in stages.</h3>
+      <p>The proposed language provides an exemption up to $150,000 of assessed value beginning January 1, 2027, and up to $250,000 beginning January 1, 2028.</p>
+    </article>
+
+    <article class="card">
+      <span class="num">03 · New Florida residents</span>
+      <h3>A separate five-year rule would apply to certain new residents.</h3>
+      <p>A person establishing Florida residency on or after January 1, 2027, who was not a permanent Florida resident on December 31, 2026, would initially receive an exemption up to $50,000 and generally become eligible for the larger exemption after the five-year period described in the resolution.</p>
+    </article>
+
+    <article class="card">
+      <span class="num">04 · Local revenue</span>
+      <h3>County and municipal property-tax revenue would be limited to specified uses.</h3>
+      <p>The proposal identifies permitted uses including public safety, education and public schools, infrastructure, natural-resource projects, certain bonds and debt service, employee retirement obligations and specified county government operations.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">Homestead timeline</p><h2>How the exemption changes over time</h2></div>
+    <p>The resolution includes separate provisions for existing Florida permanent residents and certain people establishing Florida residency beginning in 2027.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="time">
+      <span class="year">Before 2027</span>
+      <div class="value">Current structure</div>
+      <p>The existing constitutional homestead-exemption structure remains in place before the proposed effective date.</p>
+    </div>
+    <div class="time">
+      <span class="year">January 1, 2027</span>
+      <div class="value">$150,000</div>
+      <p>The proposed language increases the exemption for eligible homestead property up to $150,000 of assessed value.</p>
+    </div>
+    <div class="time">
+      <span class="year">January 1, 2028</span>
+      <div class="value">$250,000</div>
+      <p>The proposed language increases the exemption again, up to $250,000 of assessed value.</p>
+    </div>
+  </div>
+
+  <div class="note"><strong>Important:</strong> The resolution contains additional eligibility, inflation-adjustment and implementation provisions. Individual tax effects depend on assessed value, exemptions and the applicable taxing authorities.</div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">Local government revenue</p><h2>Permitted uses identified in the proposal</h2></div>
+    <p>The amendment would add constitutional language limiting the use of county and municipal ad valorem tax revenue to specified public purposes.</p>
+  </div>
+
+  <div class="services">
+    <div class="service"><strong>Public safety</strong><span>Law enforcement, fire service and emergency medical service.</span></div>
+    <div class="service"><strong>Education</strong><span>Funding for education and public schools.</span></div>
+    <div class="service"><strong>Infrastructure</strong><span>Roads, bridges, maintenance and stormwater control.</span></div>
+    <div class="service"><strong>Natural resources</strong><span>Projects including flood-control measures.</span></div>
+    <div class="service"><strong>Bonds and debt</strong><span>Eligible local bonds and debt service on existing obligations.</span></div>
+    <div class="service"><strong>Retirement obligations</strong><span>Retirement benefits for local government employees.</span></div>
+    <div class="service"><strong>County government</strong><span>Certain operations and administration of county officers and commissioners.</span></div>
+    <div class="service"><strong>Implementation assistance</strong><span>A state trust fund would be created to provide grants to assist implementation.</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">Ballot language</p><h2>What the resolution says will appear on the ballot</h2></div>
+    <p>The resolution provides the official ballot title “Save Our Homes from Excessive Property Taxes.”</p>
+  </div>
+
+  <div class="ballot">
+    <p class="eyebrow">Official ballot title and summary themes</p>
+    <h3>“Save Our Homes from Excessive Property Taxes”</h3>
+
+    <div class="ballot-grid">
+      <div class="ballot-item"><strong>Homestead property</strong><span>The ballot summary describes an exemption of the first $250,000 of a homestead's value and a schedule for further exemption changes through general law.</span></div>
+      <div class="ballot-item"><strong>Core services</strong><span>The ballot summary states that remaining local property-tax revenue would be directed to specified core public needs.</span></div>
+      <div class="ballot-item"><strong>Business property</strong><span>The ballot summary describes limits on future property-tax assessments on businesses.</span></div>
+      <div class="ballot-item"><strong>Residency requirement</strong><span>The ballot summary describes a five-year residency period for certain people establishing Florida residency after January 1, 2027, before receiving the increased exemption.</span></div>
+      <div class="ballot-item"><strong>State trust fund</strong><span>The ballot summary describes a state trust fund providing grants to assist local governments with specified core services.</span></div>
+      <div class="ballot-item"><strong>Effective date</strong><span>If approved, the amendment would take effect January 1, 2027.</span></div>
+    </div>
+  </div>
+
+  <div class="note"><strong>Neutrality note:</strong> Phrases such as “benefits Florida taxpayers” and the official ballot title come from the resolution's prescribed ballot language. They are not statements written or endorsed by the City of Altamonte Springs.</div>
+</section>
+
+<section class="faq">
+  <div class="section-head">
+    <div><p class="eyebrow">Frequently asked questions</p><h2>Amendment 3 FAQ</h2></div>
+    <p>The resolution does not calculate an individual property owner's savings or a specific fiscal impact for Altamonte Springs.</p>
+  </div>
+
+  <div class="faq-list">
+    <details><summary>What is Amendment 3?</summary><div class="answer">Amendment 3 is a proposed amendment to the Florida Constitution addressing property-tax assessments, homestead exemptions and the use of certain local ad valorem tax revenue. The proposal comes from House Joint Resolution 1F.</div></details>
+
+    <details><summary>When would the amendment take effect?</summary><div class="answer">If approved by voters, the constitutional changes described in the resolution would take effect January 1, 2027.</div></details>
+
+    <details><summary>Does the proposal immediately eliminate all property taxes?</summary><div class="answer">No. The resolution does not make all property taxes disappear on January 1, 2027. It increases the homestead exemption in stages and directs the Legislature to establish procedures relating to additional exemption increases. The official ballot summary describes a schedule for full elimination through general law.</div></details>
+
+    <details><summary>How would the homestead exemption change?</summary><div class="answer">For eligible homestead property, the proposed language provides an exemption up to $150,000 beginning January 1, 2027, and up to $250,000 beginning January 1, 2028. The resolution includes additional eligibility and inflation-adjustment provisions.</div></details>
+
+    <details><summary>What happens if someone becomes a Florida resident after January 1, 2027?</summary><div class="answer">A person who establishes Florida residency on or after January 1, 2027, and was not a permanent Florida resident as of December 31, 2026, would generally receive an exemption up to $50,000 during the initial period. The larger exemption would become available after the five-year requirement described in the resolution, subject to the amendment's other provisions.</div></details>
+
+    <details><summary>Does Amendment 3 change the annual assessment cap on non-homestead property?</summary><div class="answer">Yes. For specified non-homestead real property, the proposal changes the annual assessment-increase cap from 10% to 5% beginning January 1, 2027. That proposed 5% limitation applies to levies other than school district levies.</div></details>
+
+    <details><summary>What could counties and municipalities use property-tax revenue for?</summary><div class="answer">The proposal lists specified uses including public safety, education and public schools, infrastructure, natural-resource projects, eligible bonds and debt service, retirement obligations for local government employees and certain county government operations.</div></details>
+
+    <details><summary>What is the proposed state trust fund?</summary><div class="answer">If the amendment is adopted, the resolution directs the Legislature to create a trust fund to provide grants assisting with implementation. The ballot summary describes the fund as supporting core local services such as education, law enforcement and infrastructure.</div></details>
+
+    <details><summary>Does the resolution state how much Altamonte Springs would gain or lose?</summary><div class="answer">No. House Joint Resolution 1F does not provide a dollar-specific fiscal impact for the City of Altamonte Springs. Any City-specific financial analysis would be separate from the text of the amendment.</div></details>
+
+    <details><summary>Is the City of Altamonte Springs supporting or opposing Amendment 3?</summary><div class="answer">This webpage is designed as an informational resource only. It does not advocate for or against Amendment 3.</div></details>
+  </div>
+</section>
+
+<div class="source-card">
+  <div>
+    <p><strong>Primary source</strong></p>
+    <p class="sub">Florida House Joint Resolution 1F — proposed constitutional amendments to Article VII and Article XII.</p>
+  </div>
+  <a class="button" href="amendment-3-bill.pdf" target="_blank" rel="noreferrer">Read the resolution</a>
+</div>
+
+<footer>
+  <p>City of Altamonte Springs · Property Tax Amendment 3 Information</p>
+  <p>Informational resource · No advocacy for or against the ballot measure</p>
+</footer>
+
+</main>
+</body>
+</html>
