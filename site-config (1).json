@@ -1,0 +1,28 @@
+{
+  "pageTitle": "City Information | Altamonte Springs",
+  "theme": {
+    "background": "#073f42",
+    "cardBackground": "#0b4b4f",
+    "accent": "#2cc7c4"
+  },
+  "cards": [
+    {
+      "title": "Budget<br>Transparency",
+      "description": "Explore the City's budget, financial reports, and easy-to-understand spending information.",
+      "image": "images/budget-transparency.jpg",
+      "imageAlt": "City budget transparency",
+      "imagePosition": "center",
+      "link": "#",
+      "openInNewTab": false
+    },
+    {
+      "title": "Property Tax<br>Amendment 3",
+      "description": "Learn what Amendment 3 proposes and review clear, neutral information, examples, and official resources.",
+      "image": "images/amendment-3.jpg",
+      "imageAlt": "Property Tax Amendment 3 information",
+      "imagePosition": "center",
+      "link": "#",
+      "openInNewTab": false
+    }
+  ]
+}
